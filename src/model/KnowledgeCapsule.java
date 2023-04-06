@@ -95,7 +95,14 @@ public class KnowledgeCapsule {
      */
     private List<String> hashtags;
 
-    //The constructor method. 
+    /**
+     * the constructor method.
+     * @param id : String the unique identifier of the knowledge capsule. 
+     * @param description : String the description of the situation during a phase.
+     * @param collaborator : Collaborator the collaborator that registered the knowledge capsule
+     * @param learnedLesson : String the collaborators learned lesson in a certain situation during a phase
+     * @param capsuleTypeOption : int the option that represents the type of the capsule.
+     */ 
     public KnowledgeCapsule(String id, String description, Collaborator collaborator, String learnedLesson, int capsuleTypeOption){
 
         this.id = id;

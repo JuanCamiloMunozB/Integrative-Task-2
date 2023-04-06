@@ -60,7 +60,16 @@ public class Project{
      */
 	private DateFormat formatter;
 
-    //The constructor method.
+    /**
+     * The constructor method.
+     * @param name : String the name of the project.
+     * @param clientName : String the name of the client of GreenSQA.
+     * @param initialDate : Calendar the planned start date of the project.
+     * @param finalDate : Calendar the planned end date of the project.
+     * @param budget : double the budget of the project.
+     * @param proyectsManager : Manager the manager of the projects.
+     * @param clientsManager : Manager the clients manager.
+     */
 	public Project(String name, String clientName, Calendar initialDate, Calendar finalDate, double budget, Manager proyectsManager, Manager clientsManager){
 		
 		this.formatter = new SimpleDateFormat("dd/M/yy");
@@ -252,7 +261,7 @@ public class Project{
      * @param collaboratorsName  : String the name of the collaborator that registered the capsule.
      * @param collaboratorsPosition : String the position of the collaborator that registered th capsule.
      * @param learnedLesson : String the collaborators learned lesson. 
-     * @return 
+     * @return : String returns a message that indicates that the capsule has been registered.
      */
     public String sendCapsuleToPhase(String id, String description, int capsuleTypeOption, String collaboratorsName, String collaboratorsPosition, String learnedLesson){
 

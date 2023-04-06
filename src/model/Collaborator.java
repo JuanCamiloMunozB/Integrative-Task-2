@@ -15,7 +15,11 @@ public class Collaborator {
      */
     private String position;
 
-    //The constructor method
+    /**
+     * the constructor method
+     * @param name : String the name of the collaborator
+     * @param position : the position of the collaborator
+     */
     public Collaborator(String name, String position){
         this.name = name;
         this.position = position;

@@ -11,13 +11,29 @@ import java.text.ParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * This isn the Main class 
+ */
 public class Main{
 
+    /**
+     * the scanner of the users input
+     */
 	private Scanner reader;
+
+    /**
+     * the call of the controller class
+     */
 	private GreenSQA controller;
+
+    /**
+     * the format in which some dates are going to be.
+     */
 	private SimpleDateFormat format;
 
-    //The constructor method.
+    /**
+     * The constructor method
+     */
 	public Main() {
 
 		reader = new Scanner(System.in);
@@ -27,7 +43,7 @@ public class Main{
 
      /**
      * This is the main method where the other methods are going to be executed.
-     * @param args
+     * @param args : the string arguments
      */
 	public static void main(String[] args) {
 
@@ -57,7 +73,7 @@ public class Main{
 
     /**
      * This method executes the option previously selected by the user from the menu or 
-     * @param answer : int the option selected by the user.
+     * @param ans : int the option selected by the user.
      */
 	public void executeOption(int ans){
 		switch(ans){

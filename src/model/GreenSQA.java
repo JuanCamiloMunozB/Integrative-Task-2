@@ -22,7 +22,9 @@ public class GreenSQA {
      */
 	private Project[] projects;
 
-    //The constructor method.
+    /**
+     * The constructor method.
+     */
 	public GreenSQA() {
 
 		projects = new Project[MAX_PROYECTS];
@@ -281,7 +283,7 @@ public class GreenSQA {
     //Other functionalities
     /**
      * This method searchs if there is a project with an especified name.
-     * @param proyectSearch : String the especified projects name.
+     * @param projectSearch : String the especified projects name.
      * @return : int it returns -1 if there is no project with that especified name or a number between [0,9] if it is.
      */
     public int searchProject(String projectSearch){

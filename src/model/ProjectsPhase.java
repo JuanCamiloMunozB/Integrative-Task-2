@@ -116,7 +116,11 @@ public class ProjectsPhase {
      */
     private boolean approvalStatus;
 
-    //The constructor method.
+    /**
+     * The constructor method
+     * @param months : int  Represents the duration in months of the phase.
+     * @param phaseNameOption : int the option that represents the name/type of the phase.
+     */
     public ProjectsPhase(int months, int phaseNameOption){
         
         this.months = months;

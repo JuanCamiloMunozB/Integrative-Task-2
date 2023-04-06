@@ -11,11 +11,15 @@ public class Manager {
     private String name;
 
     /**
-     * This represents the managet cellphone
+     * This represents the managers cellphone
      */
     private String cellphone;
 
-    //The constructor method
+    /**
+     * The constructor method
+     * @param name : String the managers name
+     * @param cellphone : String the managers cellphone
+     */
     public Manager(String name, String cellphone){
         this.name = name;
         this.cellphone = cellphone;

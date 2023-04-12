@@ -8,8 +8,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.text.ParseException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * This isn the Main class 
@@ -69,6 +67,11 @@ public class Main{
 		System.out.println("3. Register a knowledge capsule");
         System.out.println("4. Approve a knowledge capsule");
 		System.out.println("5. Publish a knowledge capsule");
+        System.out.println("6. Consult how many capsules are registered for each type of capsule.");
+		System.out.println("7. Consult a list of lessons learned corresponding to the capsules registered in the projects for a particular stage");
+		System.out.println("8. Consult the name of the project with the most capsules registered.");
+        System.out.println("9. Consult if a collaborator has registered capsules in a project.");
+		System.out.println("10. Consult the situations and learned lessons from approved and published capsules.");
 	}
 
     /**
@@ -99,6 +102,26 @@ public class Main{
 
             case 5:
                 publishCapsule();
+            break;
+
+            case 6:
+                showAmountCapsulesPerType();
+            break;
+
+            case 7:
+                showPhaseLearnedLessons();
+            break;
+
+            case 8:
+                showProjectWithMostCapsules();
+            break;
+
+            case 9:
+                showCollaboratorsCapsules();
+            break;
+
+            case 10:
+                showApprovedCapsulesDescriptionsAndLearnedLessons();
             break;
 
 			default:
@@ -267,12 +290,12 @@ public class Main{
 
         //Checks if the description has the "#"
         do{
-            System.out.println("The description should have at least one keyword highlighted by two hashtags.\n Example: #Apples# are fruits, but #potatoes# #carrots# are not");
-            System.out.print("Type the description of the situation: ");
+            System.out.println("\nThe description should have at least one keyword highlighted by two hashtags.\nExample: #Apples# are fruits, but #potatoes# #carrots# are not.");
+            System.out.print("-Type the description of the situation: ");
             description = reader.next();
             isValid = validateHashtags(description);
 
-            if (!isValid) {
+            if (isValid == false) {
                 System.out.println("the description should have at least one keyword highlighted by two hashtags");
             }
         }while(!isValid);
@@ -280,7 +303,7 @@ public class Main{
         //Checks if the selected option matches with the valid ones.
         do{ 
             capsuleTypesMenu();
-            selectedOption = validateInteger("Selecte one option: ");
+            selectedOption = validateInteger("Select one option: ");
         }while(selectedOption<0 || selectedOption>4);
 
         System.out.print("Type the collaborator's name: ");
@@ -291,15 +314,12 @@ public class Main{
         
         //Checks if the learnedLesson has the "#"
         do{
-            System.out.println("The learned lesson should have at least one keyword highlighted by two hashtags.\n Example: #Apples# are fruits, but #potatoes# #carrots# are not");
-            System.out.println("Write what you had learn with the situation: ");
+            System.out.println("\nThe learned lesson should have at least one keyword highlighted by two hashtags.\n Example: #Apples# are fruits, but #potatoes# #carrots# are not");
+            System.out.print("-Write what you had learn with the situation: ");
             learnedLesson = reader.next();
+            isValid = validateHashtags(learnedLesson);
 
-            System.out.print("Type the description of the situation: ");
-                description = reader.next();
-                isValid = validateHashtags(description);
-
-                if (!isValid) {
+                if (isValid == false) {
                     System.out.println("the description should have at least one keyword highlighted by two hashtags");
                 }
         }while(!isValid);
@@ -320,18 +340,26 @@ public class Main{
     }
 
     /**
-     * This method checks if a String input has at least two hashtags.
+     * This method checks if a String input has placed rigth the hashtags.
      * @param input : String text input.
-     * @return false if it doesn't finds at least two hashtags or true if it does.
+     * @return this method returns false if the hashtags are misplaced or true if they are not .
      */
     public boolean validateHashtags(String input) {
-        Pattern pattern = Pattern.compile("#.*?#");
-        Matcher matcher = pattern.matcher(input);
-        int count = 0;
-        while (matcher.find()) {
-            count++;
+        boolean isFound = false;
+        int contHash = 0;
+        char[] charArray = input.toCharArray();
+
+        for(int i = 0; i<input.length(); i++){
+            if(charArray[i] == '#'){
+                contHash++;
+            }
         }
-        return count >= 2;
+
+        if(contHash%2 == 0 && contHash>0){
+            isFound = true;
+        }
+        
+        return isFound;
     }
 
     //Functional Requeriment 6: Capsule approval.
@@ -383,6 +411,44 @@ public class Main{
 
     }
 
+    //Functional Requeriment 8: Consult Knowledges Capsules information.
+
+    public void showAmountCapsulesPerType(){
+       System.out.println(controller.calculateProjectsCapsulePerType());
+    }
+
+    public void showPhaseLearnedLessons(){
+        int selectedOption;
+
+        do{ 
+            phasesTypeMenu();
+            selectedOption = validateInteger("Select one option: ");
+        }while(selectedOption<0 || selectedOption>6);
+        
+    }
+
+    public void phasesTypeMenu(){
+        System.out.println("\n--Available types of phases: ");
+        System.out.println("1. Start");
+        System.out.println("2. Analysis");
+        System.out.println("3. Design");
+        System.out.println("4. Executiom");
+        System.out.println("5. Closing and Tracking");
+        System.out.println("6. Projects Control");
+    }
+
+    public void showProjectWithMostCapsules(){
+
+    }
+
+    public void showCollaboratorsCapsules(){
+
+    }
+
+    public void showApprovedCapsulesDescriptionsAndLearnedLessons(){
+
+    }
+
     // Other functionalities.
 
     /**
@@ -409,7 +475,8 @@ public class Main{
             } catch (ParseException error) {
                 System.out.println("Invalid option. Please, try again");
             }
-            }while(isDateSet == false);
+
+        }while(isDateSet == false);
 		
 		return calendarTime;
 	}

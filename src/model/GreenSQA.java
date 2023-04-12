@@ -176,7 +176,10 @@ public class GreenSQA {
      */
 	public String registerCapsule(int projecPosition, String id, String description, int capsuleTypeOption, String collaboratorsName, String collaboratorsPosition, String learnedLesson){
        
-        String msg = projects[projecPosition].sendCapsuleToPhase(id, description, capsuleTypeOption, collaboratorsName, collaboratorsPosition, learnedLesson);;
+        Collaborator collaborator = new Collaborator(collaboratorsName, collaboratorsPosition);
+        KnowledgeCapsule capsule = new KnowledgeCapsule(id, description, collaborator, learnedLesson, capsuleTypeOption);
+
+        String msg = projects[projecPosition].sendCapsuleToPhase(capsule);
 
         return msg;
     }
@@ -280,6 +283,56 @@ public class GreenSQA {
         return msg;
     }
 
+    //Functional Requeriment 8: Consult Knowledges Capsules information.
+
+    public String calculateProjectsCapsulePerType(){
+        int countTechnicalCapsules = 0;
+        int countManagementCapsules = 0;
+        int countDomainCapsules = 0;
+        int countExperiencesCapsules = 0;
+
+        for(int i = 0; i<MAX_PROYECTS; i++){
+            if(projects[i] !=null){
+                for(int j = 0; j<projects[i].getMaxPhases(); j++){
+
+                    if(projects[i].getPhase(j) != null){
+                        for(int it = 0; it<projects[i].getPhase(j).getMaxCapsules(); it++){
+
+                            if(projects[i].getPhase(j).getCapsule(it) != null){
+                                switch(projects[i].getPhase(j).getCapsule(it).getType()){
+                
+                                    case "technical":
+                                        countTechnicalCapsules++;
+                                    break;
+                
+                                    case "management":
+                                        countManagementCapsules++;
+                                    break;
+                
+                                    case "domain":
+                                        countDomainCapsules++;
+                                    break;
+                
+                                    case "experiences":
+                                        countExperiencesCapsules++;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        String msg = ("\nnumber of tecnical capsules = "+countTechnicalCapsules+
+        "\nnumber of management capsules:" + countManagementCapsules+
+        "\nnumber of domain capsules: "+countDomainCapsules+
+        "\nnumber of experiences capsules "+countExperiencesCapsules);
+
+        return msg;
+    }
+
+     
     //Other functionalities
     /**
      * This method searchs if there is a project with an especified name.

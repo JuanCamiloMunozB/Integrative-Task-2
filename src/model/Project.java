@@ -184,6 +184,10 @@ public class Project{
         return pos;
     }
 
+    public int getMaxPhases(){
+        return MAX_PHASES;
+    }
+
     /**
      * This method adds a new phase to the array of phases.
      * @param phase : ProjectsPhase the phase that is going to be add.
@@ -252,21 +256,13 @@ public class Project{
 
         return msg;
     }
-    
+
     /**
      * This method register a new capsule and sends it to the ProjectsPhase class
-     * @param id : String the id of the capsule.
-     * @param description : String the description of the new capsule. 
-     * @param capsuleTypeOption  : int the type selected by the user.
-     * @param collaboratorsName  : String the name of the collaborator that registered the capsule.
-     * @param collaboratorsPosition : String the position of the collaborator that registered th capsule.
-     * @param learnedLesson : String the collaborators learned lesson. 
+     * @param capsule : KnoweledgeCapsule the new capsule.
      * @return : String returns a message that indicates that the capsule has been registered.
      */
-    public String sendCapsuleToPhase(String id, String description, int capsuleTypeOption, String collaboratorsName, String collaboratorsPosition, String learnedLesson){
-
-        Collaborator collaborator = new Collaborator(collaboratorsName, collaboratorsPosition);
-        KnowledgeCapsule capsule = new KnowledgeCapsule(id, description, collaborator, learnedLesson, capsuleTypeOption);
+    public String sendCapsuleToPhase(KnowledgeCapsule capsule){
 
         String msg = phases[getActivePhase()].addKnowledgeCapsule(capsule);
 

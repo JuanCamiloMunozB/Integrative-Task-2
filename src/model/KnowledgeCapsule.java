@@ -144,19 +144,19 @@ public class KnowledgeCapsule {
     private void setCapsulesType(int pos){
 
         switch(pos){
-            case 0:
+            case 1:
             type = CapsuleType.TECHNICAL.getType();
             break;
 
-            case 1:
+            case 2:
             type = CapsuleType.MANAGEMENT.getType();
             break;
 
-            case 2:
+            case 3:
             type = CapsuleType.DOMAIN.getType();
             break;
 
-            case 3:
+            case 4:
             type = CapsuleType.EXPERIENCES.getType();
             break;
         }

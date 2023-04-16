@@ -2,6 +2,7 @@ package model;
 
 //java library
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * GreenSQA this class represents the controller class of the system 
@@ -21,6 +22,8 @@ public class GreenSQA {
      * projects represents the array of projects.
      */
 	private Project[] projects;
+
+   private List<KnowledgeCapsule> publishedCapsules;
 
     /**
      * The constructor method.
@@ -269,7 +272,7 @@ public class GreenSQA {
      * @param capsuleIdSearch : String the especified id.
      * @return : String a message indicating that the capsule was not found or indicating that it was published and shows the url.
      */
-    public String isCapsuleApprove(int projecPosition, String capsuleIdSearch){
+    public String obtainCapsuleLink(int projecPosition, String capsuleIdSearch){
         String msg = "There is no capsule with that id";
         ProjectsPhase view = projects[projecPosition].getPhase(projects[projecPosition].getActivePhase());
 
@@ -278,6 +281,7 @@ public class GreenSQA {
         if(requestedCapsule != -1){
             if(view.getCapsule(requestedCapsule).getApprovalStatus() == true){
                 msg = "the capsule has been published successfully\nurl: https://intranet.GreenSQA.com/"+ projects[projecPosition].getName() +"/"+ view.getNamePhase()+"/"+view.getCapsule(requestedCapsule).getId()+"/";
+                publishedCapsules.add(view.getCapsule(requestedCapsule));
             }
         }
         return msg;
@@ -293,32 +297,32 @@ public class GreenSQA {
 
         for(int i = 0; i<MAX_PROYECTS; i++){
             if(projects[i] !=null){
+
                 for(int j = 0; j<projects[i].getMaxPhases(); j++){
 
-                    if(projects[i].getPhase(j) != null){
-                        for(int it = 0; it<projects[i].getPhase(j).getMaxCapsules(); it++){
+                    for(int it = 0; it<projects[i].getPhase(j).getMaxCapsules(); it++){
 
-                            if(projects[i].getPhase(j).getCapsule(it) != null){
-                                switch(projects[i].getPhase(j).getCapsule(it).getType()){
-                
-                                    case "technical":
-                                        countTechnicalCapsules++;
-                                    break;
-                
-                                    case "management":
-                                        countManagementCapsules++;
-                                    break;
-                
-                                    case "domain":
-                                        countDomainCapsules++;
-                                    break;
-                
-                                    case "experiences":
-                                        countExperiencesCapsules++;
-                                    break;
-                                }
+                        if(projects[i].getPhase(j).getCapsule(it) != null){
+                            switch(projects[i].getPhase(j).getCapsule(it).getType()){
+            
+                                case "technical":
+                                    countTechnicalCapsules++;
+                                break;
+            
+                                case "management":
+                                    countManagementCapsules++;
+                                break;
+            
+                                case "domain":
+                                    countDomainCapsules++;
+                                break;
+            
+                                case "experiences":
+                                    countExperiencesCapsules++;
+                                break;
                             }
                         }
+                    
                     }
                 }
             }
@@ -332,8 +336,99 @@ public class GreenSQA {
         return msg;
     }
 
-     
+    public String obtainPhasesLearnedLessons(int phasePosition){
+        String msg = "";
+
+        if(projectCounter == 0){
+            msg = "no project has been registered yet";
+
+        }else{
+            for(int i = 0; i<MAX_PROYECTS; i++){
+                if(projects[i] != null){
+                    msg += "project: "+projects[i].getName();
+
+                    for(int j = 0; j<projects[i].getPhase(phasePosition).getMaxCapsules(); j++){
+                        if(projects[i].getPhase(phasePosition).getCapsule(j) != null){
+                            msg += (j+1) + "-"+ projects[i].getPhase(phasePosition).getCapsule(j).getLearnedLesson()+"\n";
+                        }
+                    }    
+                }
+            }
+        }
+        return msg;
+    }
+    
+    public String obtainProjectsNameWithMostCapsules(){
+        String msg = "no project has been registered yet";
+        int projectsCapsulesCounter = 0;
+        int projectsCapsules = 0;
+        int projectPos;
+
+        for(int i = 0; i<MAX_PROYECTS; i++){
+            projectsCapsulesCounter = 0;
+
+            if(projects[i] != null){
+                for(int j = 0; j<projects[i].getMaxPhases(); j++){
+                    projectsCapsulesCounter = projects[i].getPhase(j).getCapsulesCounter();
+                }
+
+                if(projectsCapsulesCounter>projectsCapsules){
+                    projectPos = i;
+                    projectsCapsules = projectsCapsulesCounter;
+                    msg = "The project with most capsules is " + projects[projectPos].getName() + "with " + projectsCapsules + "capsules";
+                }
+            }
+        }
+
+        return msg;
+    }
+
+    public String collaboratorHasRegisteredCapsule(String collaboratorsName){
+        String msg = "the collaborator "+collaboratorsName+"didn't write any capsule";
+        boolean hasRegisteredCapsule = false;
+
+        for(int i = 0; i<MAX_PROYECTS; i++){
+            if(projects[i] !=null){
+
+                for(int j = 0; j<projects[i].getMaxPhases(); j++){
+
+                    for(int it = 0; it<projects[i].getPhase(j).getMaxCapsules(); it++){
+
+                        if(projects[i].getPhase(j).getCapsule(it) != null && collaboratorsName.equalsIgnoreCase(projects[i].getPhase(j).getCapsule(it).getCollaborator().getName()) && !hasRegisteredCapsule){
+                            hasRegisteredCapsule = true;
+
+                            msg = "the collaborator " + collaboratorsName + " has registered the capsule " + projects[i].getPhase(j).getCapsule(it).getId() + " in the project " + projects[i].getName();
+                        }
+                    }
+                }
+            }
+        }
+
+        return msg;
+    }
+    
+    public String obtainPublishedCapsulesInfo(String hashtag){
+        String msg = "";
+
+        if(publishedCapsules.size() == 0){
+            for(int i = 0; i<publishedCapsules.size(); i++){
+
+                for(int j = 0; j<publishedCapsules.get(i).getHashtags().size(); j++){
+
+                    if(hashtag.equalsIgnoreCase(publishedCapsules.get(i).getHashtags().get(j))){
+                        msg = "Capsule id: "+publishedCapsules.get(i).getId()+"\n-Description: "+publishedCapsules.get(i).getDescription()+"\nLearned Lesson: "+publishedCapsules.get(i).getLearnedLesson();
+                    }
+                }
+            }
+        }else{
+            msg = "no capsule has been published yet";
+        }
+
+        return msg;
+    }
+
     //Other functionalities
+    
     /**
      * This method searchs if there is a project with an especified name.
      * @param projectSearch : String the especified projects name.
@@ -354,5 +449,7 @@ public class GreenSQA {
 
         return pos;
     }
+
+    
 
 }

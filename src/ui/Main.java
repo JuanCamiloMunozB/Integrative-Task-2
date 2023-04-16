@@ -405,7 +405,7 @@ public class Main{
             String capsuleIdSearch = reader.next();
 
             //this information is sent to the controller and prints the returned message.
-            System.out.println(controller.isCapsuleApprove(pos, capsuleIdSearch));
+            System.out.println(controller.obtainCapsuleLink(pos, capsuleIdSearch));
 
         }
 
@@ -424,6 +424,8 @@ public class Main{
             phasesTypeMenu();
             selectedOption = validateInteger("Select one option: ");
         }while(selectedOption<0 || selectedOption>6);
+
+        System.out.println(controller.obtainPhasesLearnedLessons(selectedOption));
         
     }
 
@@ -439,14 +441,22 @@ public class Main{
 
     public void showProjectWithMostCapsules(){
 
+        System.out.println(controller.obtainProjectsNameWithMostCapsules());
+
     }
 
     public void showCollaboratorsCapsules(){
+        System.out.print("Type the name of the collaborator: ");
+        String collaboratorsName = reader.next();
 
+        System.out.println(controller.collaboratorHasRegisteredCapsule(collaboratorsName));
     }
 
     public void showApprovedCapsulesDescriptionsAndLearnedLessons(){
+        System.out.print("Type what you want to search: ");
+        String searchString = reader.next();
 
+        System.out.println(controller.obtainPublishedCapsulesInfo(searchString));
     }
 
     // Other functionalities.
@@ -532,4 +542,5 @@ public class Main{
 
         return input;
     }
+
 }

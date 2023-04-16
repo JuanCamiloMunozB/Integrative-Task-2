@@ -40,7 +40,7 @@ enum PhaseType {
     /**
      * the name of the phase.
      */
-    private final String name;
+    private String name;
     
     // constructor
     private PhaseType(String name) {
@@ -248,6 +248,10 @@ public class ProjectsPhase {
      */
     public int getMaxCapsules(){
         return MAX_CAPSULES;
+    }
+
+    public int getCapsulesCounter(){
+        return capsulesCounter;
     }
 
     /**

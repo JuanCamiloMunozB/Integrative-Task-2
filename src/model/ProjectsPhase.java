@@ -250,6 +250,10 @@ public class ProjectsPhase {
         return MAX_CAPSULES;
     }
 
+    /**
+     * This method returns the amount of capsules registered in the phase.
+     * @return : String the variable that counts the amount of registered capsules on the phase.
+     */
     public int getCapsulesCounter(){
         return capsulesCounter;
     }
@@ -357,7 +361,7 @@ public class ProjectsPhase {
         int pos = -1; 
 		boolean isFound = false; 
 		for(int i = 0; i < MAX_CAPSULES && !isFound; i++){
-			if(capsules[i] == null){
+			if(capsules[i] != null){
                 if(capsules[i].getId().equalsIgnoreCase(searchCapsule)){
                     pos = i; 
 				    isFound = true;

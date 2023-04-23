@@ -3,8 +3,6 @@ package model;
 //java library
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.Calendar;
 
 /**
@@ -122,18 +120,36 @@ public class KnowledgeCapsule {
      * The extracted hashtags are added to the 'hashtags' list if they are not already present.
      */
     private void extractHashtags(){
-        // Create a pattern to match hashtags in the description and learned lesson
-        Pattern pattern = Pattern.compile("#(.*?)#");
+        char[] descriptionCharArray = description.toCharArray();
+        char[] learnedLessonCharArray = learnedLesson.toCharArray();
+        int contHashDescription= 0;
+        int contHashLearnedLesson = 0;
+        String word = "";
+        
 
-        // Create a matcher object for the pattern and apply it to the description and learned 
-        Matcher matcher = pattern.matcher(description + learnedLesson);
-
-        // Iterate over the matches and add them to the 'hashtags' list
-        while (matcher.find()) {
-            String hashtag = matcher.group(1);
-            if (!hashtags.contains(hashtag)) {
-                hashtags.add(hashtag);
+        for(int i = 0; i<descriptionCharArray.length; i++){
+            if(descriptionCharArray[i] == '#'){
+                contHashDescription++;
+            }else if(contHashDescription%2 != 0){
+                word += descriptionCharArray[i];
+            }else{
+                hashtags.add(word);
+                word = "";
             }
+            
+        }
+
+        for(int i = 0; i<learnedLessonCharArray.length; i++){
+          
+            if(learnedLessonCharArray[i] == '#'){
+                contHashLearnedLesson++;
+            }else if(contHashLearnedLesson%2 != 0){
+                word += learnedLessonCharArray[i];
+            }else{
+                hashtags.add(word);
+                word = "";
+            }
+            
         }
     }
 

@@ -184,6 +184,10 @@ public class Project{
         return pos;
     }
 
+    /**
+     * This method returns the maximun amount of phases that can be created on a project.
+     * @return : int the maximun amount of phases that can be created.
+     */
     public int getMaxPhases(){
         return MAX_PHASES;
     }

@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 //java library
 import java.util.Calendar;
 import java.util.List;
@@ -23,7 +24,10 @@ public class GreenSQA {
      */
 	private Project[] projects;
 
-   private List<KnowledgeCapsule> publishedCapsules;
+    /**
+     * represents the published capsules of greenSQA.
+     */
+    private List<KnowledgeCapsule> publishedCapsules;
 
     /**
      * The constructor method.
@@ -31,6 +35,7 @@ public class GreenSQA {
 	public GreenSQA() {
 
 		projects = new Project[MAX_PROYECTS];
+        publishedCapsules = new ArrayList<>();
 	
 	}
 	
@@ -96,7 +101,7 @@ public class GreenSQA {
 		return pos; 
 	}
 
-    //Functional Requierement 2: Creation of project phases
+    //Functional Requierement 1: Creation of project phases
 
     /**
      * this method adds the phases to a project.
@@ -152,7 +157,7 @@ public class GreenSQA {
         }
     }
 
-    //Functional Requeriment 4: Culmination of a phase of the project.
+    //Functional Requeriment 2: Culmination of a phase of the project.
 
     /**
      * This method calls the method that culminates the current active phase in a registered proyect and sends a message.
@@ -164,7 +169,7 @@ public class GreenSQA {
         return msg;
     }
 
-    //Functional Requeriment 5: Knowledge capsule regisration.
+    //Functional Requeriment 3: Knowledge capsule regisration.
 
     /**
      * This method calls the method that adds a new capsule and sends a message.
@@ -235,7 +240,7 @@ public class GreenSQA {
         return isIdAvailable;
     }
     
-    //Functional Requeriment 6: Capsule approval.
+    //Functional Requeriment 4: Capsule approval.
 
     /**
      * Checks if there is an capsule with an especified id and, if it finds it, approves capsule.
@@ -250,7 +255,7 @@ public class GreenSQA {
         int requestedCapsule = view.searchKnowledgeCapsule(capsuleIdSearch);
 
         if(requestedCapsule != -1){
-            view.getCapsule(requestedCapsule).setApprovalStatus(false);
+            view.getCapsule(requestedCapsule).setApprovalStatus(true);
             msg = "the capsule was approved sucessfully";
 
             Calendar calendarTime = Calendar.getInstance();
@@ -264,7 +269,7 @@ public class GreenSQA {
         return msg;
     }
 
-    //Functional Requeriment 7: Capsule publication to the organization.
+    //Functional Requeriment 5: Capsule publication to the organization.
 
     /**
      * Checks if there is an capsule with an especified id and, if it finds it, publish the capsule.
@@ -282,13 +287,19 @@ public class GreenSQA {
             if(view.getCapsule(requestedCapsule).getApprovalStatus() == true){
                 msg = "the capsule has been published successfully\nurl: https://intranet.GreenSQA.com/"+ projects[projecPosition].getName() +"/"+ view.getNamePhase()+"/"+view.getCapsule(requestedCapsule).getId()+"/";
                 publishedCapsules.add(view.getCapsule(requestedCapsule));
+            }else{
+                msg = "this capsule has not yet been approved";
             }
         }
         return msg;
     }
 
-    //Functional Requeriment 8: Consult Knowledges Capsules information.
+   //Functional Requeriment 6: Consult how many capsules are registered for each type of capsule.
 
+    /**
+     * This method counts the amount of registered capsules per type
+     * @return returns a message with the amount of capsules per type
+     */
     public String calculateProjectsCapsulePerType(){
         int countTechnicalCapsules = 0;
         int countManagementCapsules = 0;
@@ -328,7 +339,7 @@ public class GreenSQA {
             }
         }
 
-        String msg = ("\nnumber of tecnical capsules = "+countTechnicalCapsules+
+        String msg = ("\nnumber of tecnical capsules: "+countTechnicalCapsules+
         "\nnumber of management capsules:" + countManagementCapsules+
         "\nnumber of domain capsules: "+countDomainCapsules+
         "\nnumber of experiences capsules "+countExperiencesCapsules);
@@ -336,6 +347,13 @@ public class GreenSQA {
         return msg;
     }
 
+    //Functional Requeriment 7: Consult a list of lessons learned corresponding to the capsules registered in the projects for a particular stage.
+
+    /**
+     * This method obtains the learned lessons in a particular phase.
+     * @param phasePosition : int the position on the array of phases in the clas project
+     * @return returns a message with the learned lessons or, if there is no registered project yet, a message indicating this.
+     */
     public String obtainPhasesLearnedLessons(int phasePosition){
         String msg = "";
 
@@ -345,7 +363,7 @@ public class GreenSQA {
         }else{
             for(int i = 0; i<MAX_PROYECTS; i++){
                 if(projects[i] != null){
-                    msg += "project: "+projects[i].getName();
+                    msg += "project: "+projects[i].getName()+"\n";
 
                     for(int j = 0; j<projects[i].getPhase(phasePosition).getMaxCapsules(); j++){
                         if(projects[i].getPhase(phasePosition).getCapsule(j) != null){
@@ -358,33 +376,50 @@ public class GreenSQA {
         return msg;
     }
     
+    //Functional Requeriment 8: Consult the name of the project with the most capsules registered.
+
+    /**
+     * This method checks which project has the most capsules registered
+     * @return a message with the name of the project or, if if there is no registered project yet, a message indicating this.
+     */
     public String obtainProjectsNameWithMostCapsules(){
         String msg = "no project has been registered yet";
-        int projectsCapsulesCounter = 0;
-        int projectsCapsules = 0;
-        int projectPos;
 
-        for(int i = 0; i<MAX_PROYECTS; i++){
-            projectsCapsulesCounter = 0;
+        if(projectCounter != 0){
+            int projectsCapsulesCounter = 0;
+            int projectsCapsules = 0;
+            int projectPos = 0;
 
-            if(projects[i] != null){
-                for(int j = 0; j<projects[i].getMaxPhases(); j++){
-                    projectsCapsulesCounter = projects[i].getPhase(j).getCapsulesCounter();
-                }
+            for(int i = 0; i<MAX_PROYECTS; i++){
+                projectsCapsulesCounter = 0;
 
-                if(projectsCapsulesCounter>projectsCapsules){
-                    projectPos = i;
-                    projectsCapsules = projectsCapsulesCounter;
-                    msg = "The project with most capsules is " + projects[projectPos].getName() + "with " + projectsCapsules + "capsules";
+                if(projects[i] != null){
+                    for(int j = 0; j<projects[i].getMaxPhases(); j++){
+                        projectsCapsulesCounter += projects[i].getPhase(j).getCapsulesCounter();
+                    }
+
+                    if(projectsCapsulesCounter>projectsCapsules){
+                        projectPos = i;
+                        projectsCapsules = projectsCapsulesCounter;
+                    }
                 }
             }
+
+            msg = "The project with most capsules is " + projects[projectPos].getName() + " with " + projectsCapsules + "capsules";
         }
 
         return msg;
     }
 
+    //Functional Requeriment 9: Consult if a collaborator has registered capsules in a project.
+
+    /**
+     * This method checks if a collaborator has registered a capsules.
+     * @param collaboratorsName : the name of the searched collaborator
+     * @return a message indicating if the collaborator has or not wrote any capsule yet.
+     */
     public String collaboratorHasRegisteredCapsule(String collaboratorsName){
-        String msg = "the collaborator "+collaboratorsName+"didn't write any capsule";
+        String msg = "the collaborator "+collaboratorsName+" didn't write any capsule";
         boolean hasRegisteredCapsule = false;
 
         for(int i = 0; i<MAX_PROYECTS; i++){
@@ -407,16 +442,23 @@ public class GreenSQA {
         return msg;
     }
     
-    public String obtainPublishedCapsulesInfo(String hashtag){
-        String msg = "";
+    //Functional Requeriment 10: Consult the situations and learned lessons from approved and published capsules.
 
-        if(publishedCapsules.size() == 0){
+    /**
+     * This method checks if there is an approved and published capsule with an especific hashtag.
+     * @param hashtag : the keyword highlighted by the two hasthags.
+     * @return a message indicating the capsule information or if it was not found.
+     */
+    public String obtainPublishedCapsulesInfo(String hashtag){
+        String msg = "There is no capsule with that hashtag";
+
+        if(publishedCapsules.size() != 0){
             for(int i = 0; i<publishedCapsules.size(); i++){
 
                 for(int j = 0; j<publishedCapsules.get(i).getHashtags().size(); j++){
 
                     if(hashtag.equalsIgnoreCase(publishedCapsules.get(i).getHashtags().get(j))){
-                        msg = "Capsule id: "+publishedCapsules.get(i).getId()+"\n-Description: "+publishedCapsules.get(i).getDescription()+"\nLearned Lesson: "+publishedCapsules.get(i).getLearnedLesson();
+                        msg = "Capsule id: "+publishedCapsules.get(i).getId()+"\n-Description: "+publishedCapsules.get(i).getDescription()+"\n-Learned Lesson: "+publishedCapsules.get(i).getLearnedLesson();
                     }
                 }
             }
@@ -449,7 +491,5 @@ public class GreenSQA {
 
         return pos;
     }
-
-    
 
 }

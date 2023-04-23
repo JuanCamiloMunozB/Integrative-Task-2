@@ -189,7 +189,7 @@ public class Main{
         }
 	}
 
-    //Functional Requierement 2: Creation of project phases
+    //Functional Requierement 1: Creation of project phases
 
     /**
      * This method asks the user for the duration in months of each project's phase and send them to the controller.
@@ -209,7 +209,7 @@ public class Main{
         controller.addPhases(months, projectsPosition);
     }
 
-    //Functional Requeriment 4: Culmination of a phase of the project.
+    //Functional Requeriment 2: Culmination of a phase of the project.
 
     /**
      * This method aks the user to enter the name of the project that they want to complete the active phase for.
@@ -232,7 +232,7 @@ public class Main{
         }
     }
 
-    //Functional Requeriment 5: Knowledge capsule regisration.
+    //Functional Requeriment 3: Knowledge capsule regisration.
 
     /**
      * This method checks if its posible to register a capsule and if it is, calls the method that does that.
@@ -260,7 +260,7 @@ public class Main{
                 System.out.println("There is no active phase in the project "+proyectSearch);
             }
         }else{
-            System.out.println("The is no proyect with that name");
+            System.out.println("There is no proyect with that name");
         }
     }
 
@@ -280,7 +280,7 @@ public class Main{
         //Checks if the id input already exists.
         do{
             System.out.print("Type the id of the capsule: ");
-            id = reader.next();
+            id = reader.nextLine();
 
             if(controller.isIdAlreadyRegistered(pos, id) == true){
                 System.out.println("There is already a capsule with that name. Please, try again");
@@ -292,7 +292,7 @@ public class Main{
         do{
             System.out.println("\nThe description should have at least one keyword highlighted by two hashtags.\nExample: #Apples# are fruits, but #potatoes# #carrots# are not.");
             System.out.print("-Type the description of the situation: ");
-            description = reader.next();
+            description = reader.nextLine();
             isValid = validateHashtags(description);
 
             if (isValid == false) {
@@ -307,16 +307,16 @@ public class Main{
         }while(selectedOption<0 || selectedOption>4);
 
         System.out.print("Type the collaborator's name: ");
-        String collaboratorsName = reader.next();
+        String collaboratorsName = reader.nextLine();
 
         System.out.print("Type the collaborators position: ");
-        String collaboratorsPosition = reader.next();
+        String collaboratorsPosition = reader.nextLine();
         
         //Checks if the learnedLesson has the "#"
         do{
             System.out.println("\nThe learned lesson should have at least one keyword highlighted by two hashtags.\n Example: #Apples# are fruits, but #potatoes# #carrots# are not");
             System.out.print("-Write what you had learn with the situation: ");
-            learnedLesson = reader.next();
+            learnedLesson = reader.nextLine();
             isValid = validateHashtags(learnedLesson);
 
                 if (isValid == false) {
@@ -362,7 +362,7 @@ public class Main{
         return isFound;
     }
 
-    //Functional Requeriment 6: Capsule approval.
+    //Functional Requeriment 4: Capsule approval.
 
     /**
      * This method asks the user where is the capsule they are going to approve and, if the system finds it, it calls the method that can approve it.
@@ -378,16 +378,18 @@ public class Main{
         //if the returned position is -1 it means that there is no project with that name.
         if(pos != -1){
             //asks the user for the id of the registered capsule that they are going to approve.
-            System.out.print("Type the identifier of the capsule you want to search");
+            System.out.print("Type the identifier of the capsule you want to search: ");
             String capsuleIdSearch = reader.next();
 
             //this information is sent to the controller and prints the returned message.
             System.out.println(controller.approveCapsule(pos, capsuleIdSearch));
 
+        }else{
+            System.out.println("There is no proyecto with that name");
         }
     }
 
-    //Functional Requeriment 7: Capsule publication to the organization.
+    //Functional Requeriment 5: Capsule publication to the organization.
 
     /**
      * This method asks the user where is the capsule they are going to publish and, if the system finds it, it calls the method that can publish it.
@@ -401,50 +403,71 @@ public class Main{
         //if the returned position is -1 it means that there is no project with that name.
         if(pos != -1){
             //asks the user for the name of the approved capsule that they are going to publish
-            System.out.print("Type the identifier of the capsule you want to search");
+            System.out.print("Type the identifier of the capsule you want to search: ");
             String capsuleIdSearch = reader.next();
 
             //this information is sent to the controller and prints the returned message.
             System.out.println(controller.obtainCapsuleLink(pos, capsuleIdSearch));
-
+        }else{
+            System.out.println("There is no proyecto with that name");
         }
 
     }
 
-    //Functional Requeriment 8: Consult Knowledges Capsules information.
+    //Functional Requeriment 6: Consult how many capsules are registered for each type of capsule.
 
+    /**
+     * This method shows the amount of registered capsules per type
+     */
     public void showAmountCapsulesPerType(){
        System.out.println(controller.calculateProjectsCapsulePerType());
     }
 
+    //Functional Requeriment 7: Consult a list of lessons learned corresponding to the capsules registered in the projects for a particular stage.
+
+    /**
+     * This method shows the registered capsules's learned lessons for all projects in a selected phase.
+     */
     public void showPhaseLearnedLessons(){
         int selectedOption;
 
         do{ 
             phasesTypeMenu();
             selectedOption = validateInteger("Select one option: ");
-        }while(selectedOption<0 || selectedOption>6);
+        }while(selectedOption<0 || selectedOption>5);
 
         System.out.println(controller.obtainPhasesLearnedLessons(selectedOption));
         
     }
 
+    /**
+     * this method shosw the available types of phases 
+     */
     public void phasesTypeMenu(){
         System.out.println("\n--Available types of phases: ");
-        System.out.println("1. Start");
-        System.out.println("2. Analysis");
-        System.out.println("3. Design");
-        System.out.println("4. Executiom");
-        System.out.println("5. Closing and Tracking");
-        System.out.println("6. Projects Control");
+        System.out.println("0. Start");
+        System.out.println("1. Analysis");
+        System.out.println("2. Design");
+        System.out.println("3. Executiom");
+        System.out.println("4. Closing and Tracking");
+        System.out.println("5. Projects Control");
     }
 
-    public void showProjectWithMostCapsules(){
+    //Functional Requeriment 8: Consult the name of the project with the most capsules registered.
 
+    /**
+     * This method shows the name of the project with most capsules registered on it.
+     */
+    public void showProjectWithMostCapsules(){
         System.out.println(controller.obtainProjectsNameWithMostCapsules());
 
     }
 
+    //Functional Requeriment 9: Consult if a collaborator has registered capsules in a project.
+
+    /**
+     * This method shows if a collaborator has registered any capsules yet and, if it has, the amount of the collaborators registered capsules.
+     */
     public void showCollaboratorsCapsules(){
         System.out.print("Type the name of the collaborator: ");
         String collaboratorsName = reader.next();
@@ -452,8 +475,13 @@ public class Main{
         System.out.println(controller.collaboratorHasRegisteredCapsule(collaboratorsName));
     }
 
+    //Functional Requeriment 10: Consult the situations and learned lessons from approved and published capsules.
+
+    /**
+     * This method shows the descriptions and learned lessons from approved and published capsules, according to a keyword contained within the capsules
+     */
     public void showApprovedCapsulesDescriptionsAndLearnedLessons(){
-        System.out.print("Type what you want to search: ");
+        System.out.print("Type the keyword in the capsule you want to search: ");
         String searchString = reader.next();
 
         System.out.println(controller.obtainPublishedCapsulesInfo(searchString));
@@ -510,9 +538,10 @@ public class Main{
                                       
             }
             else{
-                reader.nextLine();
                 System.out.println("Invalid option. Please, try again.\n");
+                reader.nextLine();
             }
+
         }while(stopCondition != true);
 
         return input;
@@ -535,8 +564,8 @@ public class Main{
                 input = reader.nextDouble();          
             }
             else{
-                reader.next();
                 System.out.println("Invalid option. Please, try again");
+                reader.nextLine();
             }
         }while(stopCondition != true);
 
